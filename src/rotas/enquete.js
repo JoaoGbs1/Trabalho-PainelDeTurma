@@ -13,18 +13,19 @@ const opcoes = [
 
 // GET /enquete — retorna as opções com a contagem de votos.
 router.get("/", (req, res) => {
-  // TODO (Tarefa C): responda com status 200 e o objeto { opcoes }.
-  res.status(501).json({ erro: "não implementado" });
+ return res.status(200).json({opcoes})
 });
 
 // POST /enquete/voto — corpo { opcao }: incrementa o voto daquela opção.
 router.post("/voto", (req, res) => {
-  // TODO (Tarefa C):
-  //  1. Leia `opcao` de req.body.
-  //  2. Procure a opção pelo nome em `opcoes`.
-  //  3. Se não existir, responda 400.
-  //  4. Se existir, incremente `votos` e responda 200.
-  res.status(501).json({ erro: "não implementado" });
+  const { opcao } = req.body;
+  const opcaoEncontrada = opcoes.find(o => o.nome.toLowerCase() === opcao?.toLowerCase());
+  if (!opcaoEncontrada) {
+    return res.status(400).json({ erro: "Opção inválida ou não encontrada." });
+  }
+  opcaoEncontrada.votos += 1;
+  return res.status(200).json({ mensagem: "Voto computado com sucesso!", opcoes });
+
 });
 
 module.exports = router;
